@@ -2,10 +2,10 @@
 
 ## Installation
 
-- Note: it is recommended that we use virtual environments
-- make sure you have `python3` or above and `pip` installed on your machine
+-   Note: it is recommended that we use virtual environments
+-   make sure you have `python3` or above and `pip` installed on your machine
 
-- vitual environment
+-   vitual environment
 
 ```bash
 virtualenv ./virt             # unix
@@ -15,13 +15,13 @@ source ./virt/bin/activate          # unix
 %HOMEPATH%\virt\Scripts\activate    # windows
 ```
 
-- install `Django` using pip
+-   install `Django` using pip
 
 ```bash
 pip3 install Django
 ```
 
-- Go through the steps of creating a new Django project:
+-   Go through the steps of creating a new Django project:
 
 ```bash
 django-admin startproject introduction     # create a number of starter files for our project
@@ -29,13 +29,13 @@ cd introduction                            # navigate into your new project’s 
 python manage.py runserver                 # run your server
 ```
 
-- Create app
+-   Create app
 
 ```bash
 python manage.py startapp hello
 ```
 
-- Add `<APP_NAME>` to `INSTALLED_APPS` in `settings.py`
+-   Add `<APP_NAME>` to `INSTALLED_APPS` in `settings.py`
 
 ## Create our very first view
 
@@ -73,19 +73,19 @@ def index(request):
 
 ## Hello from url
 
-- main `urls.py`
+-   main `urls.py`
 
 ```python
 path('hello/', include('hello.urls'))
 ```
 
-- app's `urls.py`
+-   app's `urls.py`
 
 ```python
 path("<str:name>", views.greet, name="greet")
 ```
 
-- app's `views.py`
+-   app's `views.py`
 
 ```python
 def greet(request, name):
@@ -101,12 +101,12 @@ def greet(request, name):
 ```html
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Hello</title>
-  </head>
-  <body>
-    <h1>Hello, World!</h1>
-  </body>
+    <head>
+        <title>Hello</title>
+    </head>
+    <body>
+        <h1>Hello, World!</h1>
+    </body>
 </html>
 ```
 
@@ -133,12 +133,12 @@ def greet(request, name):
 ```html
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Hello</title>
-  </head>
-  <body>
-    <h1>Hello, {{ name }}!</h1>
-  </body>
+    <head>
+        <title>Hello</title>
+    </head>
+    <body>
+        <h1>Hello, {{ name }}!</h1>
+    </body>
 </html>
 ```
 
@@ -194,6 +194,26 @@ def index(request):
     {% endif %}
   </body>
 </html>
+```
+
+6. `static/isitchristmas/styles.css`
+
+```css
+h1 {
+    font-family: sans-serif;
+    font-size: 90px;
+    text-align: center;
+}
+```
+
+7.  add the line `{% load static %}` to the top of our HTML template
+
+<!-- prettier-ignore -->
+```html
+{% load static %} 
+......
+<link rel="stylesheet" href="{% static 'isitchristmas/styles.css' %}" />
+......
 ```
 
 # Credits
