@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Todos</title>
+    </head>
+    <body>
+        <form action="{% url 'create' %}" method="POST">
+            {% csrf_token %}
+            <input type="text" name="title" placeholder="Enter todo title">
+            <button type="submit">Create</button>
+        </form>
+
+        <ul>
+        {% for todo in todos %}
+            <li>
+                <span class="title">{{ todo.title }} -- </span>
+                {% if todo.is_completed %}
+                    <span class="completed">Completed</span>
+                {% else %}
+                    <span class="not-completed">Not Completed</span>
+                {% endif %}
+                <form action="{% url 'toggle' todo.id %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit">Toggle</button>
+                </form>
+            </li>
+        {% endfor %}
+        </ul>
+    </body>
+</html>
