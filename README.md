@@ -1,5 +1,5 @@
-# Web Development In Python
+# Django Workshop
 
-- [Django Introduction](./introduction.md)
-- [SQL](./SQL.md)
-- [Django Models](./models.md)
+-   [Django Introduction](./introduction.md)
+-   [SQL](./SQL.md)
+-   [Django Models](./models.md)
