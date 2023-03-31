@@ -20,3 +20,9 @@ def toggle(request, todo_id):
     todo.is_completed = not todo.is_completed
     todo.save()
     return redirect("index")
+
+
+def delete(request, todo_id):
+    todo = Todo.objects.get(id=todo_id)
+    todo.delete()
+    return redirect("index")

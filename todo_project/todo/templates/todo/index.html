@@ -1,30 +1,83 @@
 <!DOCTYPE html>
+
 <html lang="en">
     <head>
         <title>Todos</title>
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp"
+            crossorigin="anonymous"
+        />
     </head>
-    <body>
-        <form action="{% url 'create' %}" method="POST">
-            {% csrf_token %}
-            <input type="text" name="title" placeholder="Enter todo title">
-            <button type="submit">Create</button>
-        </form>
 
-        <ul>
-        {% for todo in todos %}
-            <li>
-                <span class="title">{{ todo.title }} -- </span>
-                {% if todo.is_completed %}
-                    <span class="completed">Completed</span>
-                {% else %}
-                    <span class="not-completed">Not Completed</span>
-                {% endif %}
-                <form action="{% url 'toggle' todo.id %}" method="POST">
-                    {% csrf_token %}
-                    <button type="submit">Toggle</button>
-                </form>
-            </li>
-        {% endfor %}
-        </ul>
+    <body>
+        <div class="container mt-5">
+            <h1>Todo List</h1>
+            <form action="{% url 'create' %}" method="POST" class="mb-3">
+                {% csrf_token %}
+                <div class="input-group">
+                    <input
+                        type="text"
+                        name="title"
+                        placeholder="Enter todo title"
+                        class="form-control"
+                    />
+                    <button type="submit" class="btn btn-primary">
+                        Create
+                    </button>
+                </div>
+            </form>
+
+            <ul class="list-group">
+                {% for todo in todos %}
+                <li
+                    class="list-group-item d-flex justify-content-between align-items-center"
+                >
+                    <span class="title">{{ todo.title }}</span>
+                    <span
+                        class="badge {% if todo.is_completed %}bg-success{% else %}bg-danger{% endif %}"
+                    >
+                        {% if todo.is_completed %} 
+                            Completed 
+                        {% else %} 
+                            Not Completed 
+                        {% endif %}
+                    </span>
+                    <div>
+                        <form
+                            action="{% url 'toggle' todo.id %}"
+                            method="POST"
+                            class="d-inline"
+                        >
+                            {% csrf_token %}
+                            <button
+                                type="submit"
+                                class="btn btn-sm btn-secondary"
+                            >
+                                Toggle
+                            </button>
+                        </form>
+                        <form
+                            action="{% url 'delete' todo.id %}"
+                            method="POST"
+                            class="d-inline"
+                        >
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-danger">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N"
+            crossorigin="anonymous"
+        ></script>
     </body>
 </html>

@@ -332,3 +332,217 @@ def toggle(request, todo_id):
     todo.save()
     return redirect("index")
 ```
+
+-   concepts to understand in the above view
+
+    -   we get the `todo` object from the database using the id
+    -   we toggle the `is_completed` field
+    -   we `save` the todo object to the database
+
+## Deleting Todos
+
+-   We update index.html to add a button to delete a todo
+
+<!-- prettier-ignore -->
+```html
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <title>Todos</title>
+    </head>
+    <body>
+        <form action="{% url 'create' %}" method="POST">
+            {% csrf_token %}
+            <input type="text" name="title" placeholder="Enter todo title">
+            <button type="submit">Create</button>
+        </form>
+        <ul>
+        {% for todo in todos %}
+            <li>
+                <span class="title">{{ todo.title }} -- </span>
+                {% if todo.is_completed %}
+                    <span class="completed">Completed</span>
+                {% else %}
+                    <span class="not-completed">Not Completed</span>
+                {% endif %}
+                <form action="{% url 'toggle' todo.id %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit">Toggle</button>
+                </form>
+                <form action="{% url 'delete' todo.id %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit">Delete</button>
+                </form>
+            </li>
+        {% endfor %}
+        </ul>
+    </body>
+</html>
+```
+
+-   We need to create a new url for the new view
+
+```python
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path("", views.index, name="index"),
+    path("create/", views.create, name="create"),
+    path("toggle/<int:todo_id>/", views.toggle, name="toggle"),
+    path("delete/<int:todo_id>/", views.delete, name="delete")
+]
+```
+
+-   We write a new view to handle the deletion of todos
+
+```python
+def delete(request, todo_id):
+    todo = Todo.objects.get(id=todo_id)
+    todo.delete()
+    return redirect("index")
+```
+
+-   concepts to understand in the above view
+
+    -   we get the `todo` object from the database using the id
+    -   we `delete` the todo object from the database
+
+## Styling the Todo App
+
+-   We use Bootstrap 5 to style the todo app
+
+-   We add the following to the head of index.html
+
+<!-- prettier-ignore -->
+```html
+ <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+```
+
+-   just before the closing body tag of index.html
+
+<!-- prettier-ignore -->
+```html
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js" integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N" crossorigin="anonymous"></script>
+```
+
+-   We add the following to `index.html`
+
+<!-- prettier-ignore -->
+```html
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <title>Todos</title>
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp"
+            crossorigin="anonymous"
+        />
+    </head>
+
+    <body>
+        <div class="container mt-5">
+            <h1>Todo List</h1>
+            <form action="{% url 'create' %}" method="POST" class="mb-3">
+                {% csrf_token %}
+                <div class="input-group">
+                    <input
+                        type="text"
+                        name="title"
+                        placeholder="Enter todo title"
+                        class="form-control"
+                    />
+                    <button type="submit" class="btn btn-primary">
+                        Create
+                    </button>
+                </div>
+            </form>
+
+            <ul class="list-group">
+                {% for todo in todos %}
+                <li
+                    class="list-group-item d-flex justify-content-between align-items-center"
+                >
+                    <span class="title">{{ todo.title }}</span>
+                    <span
+                        class="badge {% if todo.is_completed %}bg-success{% else %}bg-danger{% endif %}"
+                    >
+                        {% if todo.is_completed %} 
+                            Completed 
+                        {% else %} 
+                            Not Completed 
+                        {% endif %}
+                    </span>
+                    <div>
+                        <form
+                            action="{% url 'toggle' todo.id %}"
+                            method="POST"
+                            class="d-inline"
+                        >
+                            {% csrf_token %}
+                            <button
+                                type="submit"
+                                class="btn btn-sm btn-secondary"
+                            >
+                                Toggle
+                            </button>
+                        </form>
+                        <form
+                            action="{% url 'delete' todo.id %}"
+                            method="POST"
+                            class="d-inline"
+                        >
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-danger">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N"
+            crossorigin="anonymous"
+        ></script>
+    </body>
+</html>
+```
+
+-   Understanding `classes` in the above snippet with bootstrap documentation for the same.
+
+    -   `container` class
+        -   https://getbootstrap.com/docs/5.0/layout/containers/
+    -   `mt-5` class
+        -   https://getbootstrap.com/docs/5.0/utilities/spacing/
+    -   `form-control` class
+        -   https://getbootstrap.com/docs/5.0/forms/form-control/
+    -   `btn` class
+        -   https://getbootstrap.com/docs/5.0/components/buttons/
+    -   `list-group` class
+        -   https://getbootstrap.com/docs/5.0/components/list-group/
+    -   `d-flex` class
+        -   https://getbootstrap.com/docs/5.0/utilities/flex/
+    -   `justify-content-between` class
+        -   https://getbootstrap.com/docs/5.0/utilities/flex/#justify-content
+    -   `align-items-center` class
+        -   https://getbootstrap.com/docs/5.0/utilities/flex/#align-items
+    -   `badge` class
+        -   https://getbootstrap.com/docs/5.0/components/badge/
+    -   `bg-success` class
+        -   https://getbootstrap.com/docs/5.0/utilities/colors/#background-color
+    -   `bg-danger` class
+        -   https://getbootstrap.com/docs/5.0/utilities/colors/#background-color
+    -   `btn-sm` class
+        -   https://getbootstrap.com/docs/5.0/components/buttons/#sizes
+    -   `btn-secondary` class
+        -   https://getbootstrap.com/docs/5.0/components/buttons/#examples
+    -   `btn-danger` class
+        -   https://getbootstrap.com/docs/5.0/components/buttons/#examples
