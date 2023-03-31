@@ -1,3 +1,5 @@
+# TODO App with Django
+
 ## Setup
 
 -   Install Django using pip
@@ -103,10 +105,10 @@ def index(request):
 
 -   concept of list of dictionary in above snippet
 
-          -   `todos` is a list of dictionaries
-          -   each dictionary has two keys `title` and `is_completed`
-          -   `title` is a string
-          -   `is_completed` is a boolean
+    -   `todos` is a list of dictionaries
+    -   each dictionary has two keys `title` and `is_completed`
+    -   `title` is a string
+    -   `is_completed` is a boolean
 
 -   We update the `index.html` file to reflect the changes
 
@@ -179,11 +181,11 @@ python manage.py createsuperuser
 
 -   Observations and concepts for django admin panel
 
-        -   we see user and group models
-        -   we see a list of todos
-        -   we can create a new todo
-        -   we can edit a todo
-        -   we can delete a todo
+    -   we see user and group models
+    -   we see a list of todos
+    -   we can create a new todo
+    -   we can edit a todo
+    -   we can delete a todo
 
 ## Fetching Todos from Database
 
@@ -265,7 +267,7 @@ def create(request):
     return redirect("index")
 ```
 
-# Toggling Todos Completion
+## Toggling Todos Completion
 
 -   We update index.html to add a button to toggle the completion of a todo
 
@@ -304,9 +306,9 @@ def create(request):
 
 -   concepts to understand in the above form snippet
 
-         - todo object also contains an id field which is a primary key
-         - we use the id field to create a url for the toggle view
-         - this id field is given by default to every model by django
+    -   todo object also contains an id field which is a primary key
+    -   we use the id field to create a url for the toggle view
+    -   this id field is given by default to every model by django
 
 -   We need to create a new url for the new view
 
